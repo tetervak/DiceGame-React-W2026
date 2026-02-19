@@ -1,33 +1,50 @@
-import { useState } from "react";
-import "./App.css";
-import { OneDice } from "./components/OneDice";
-import { getRandomDiceValue } from "./data/dice-data";
+import { useState } from 'react'
+import './App.css'
+import { type RollData, getRollData } from './data/dice-data';
+import { DiceDisplay } from './components/DiceDisplay';
 
 function App() {
-    const [diceValue, setDiceValue] = useState(1);
+    const [rollData, setRollData] = useState<RollData | undefined>(undefined);
+    const [numberOfDice, setNumberOfDice] = useState<number>(3);
 
     const onRollDice = () => {
-        setDiceValue(getRandomDiceValue());
+        setRollData(getRollData(numberOfDice));
     };
 
-    const onNextDice = () => {
-        let nextValue: number;
-        if (diceValue < 6) {
-            nextValue = diceValue + 1;
-        } else {
-            nextValue = 1;
-        }
-        setDiceValue(nextValue);
+    const onReset = () => {
+        setNumberOfDice(3);
+        setRollData(undefined);
     };
+
+    const onNumberOfDiceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setNumberOfDice(parseInt(event.target.value))
+    }
 
     return (
         <>
             <h1>Dice Game</h1>
-            <p><OneDice side={diceValue} /></p>
-            <p><button onClick={onRollDice}>Roll Dice</button></p>
-            <p><button onClick={onNextDice}>Next Dice</button></p>
+            <p>
+                Number of Dice: <select value={numberOfDice} onChange={onNumberOfDiceChange}>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+            </select>
+            </p>
+            <p>
+                <DiceDisplay values={rollData?.values} />
+            </p>
+            <p>
+                Total: {rollData?.total ?? 0}
+            </p>
+            <p>
+                <button onClick={onRollDice}>Roll Dice</button>
+            </p>
+            <p>
+                <button onClick={onReset}>Reset</button>
+            </p>
         </>
     );
 }
-
-export default App;
+export default App
