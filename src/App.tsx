@@ -10,7 +10,7 @@ function App() {
         setDiceValue(getRandomDiceValue());
     };
 
-    const onNextDice = () => {
+    const onNextSide = () => {
         let nextValue: number;
         if (diceValue < 6) {
             nextValue = diceValue + 1;
@@ -25,7 +25,7 @@ function App() {
             <h1>Dice Game</h1>
             <p><OneDice side={diceValue} /></p>
             <p><button onClick={onRollDice}>Roll Dice</button></p>
-            <p><button onClick={onNextDice}>Next Dice</button></p>
+            <p><button onClick={onNextSide}>Next Side</button></p>
         </>
     );
 }
