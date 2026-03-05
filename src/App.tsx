@@ -11,13 +11,7 @@ function App() {
     };
 
     const onNextSide = () => {
-        let nextValue: number;
-        if (diceValue < 6) {
-            nextValue = diceValue + 1;
-        } else {
-            nextValue = 1;
-        }
-        setDiceValue(nextValue);
+        setDiceValue((value: number): number => (value < 6) ? value + 1 : 1);
     };
 
     return (
