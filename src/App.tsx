@@ -1,7 +1,19 @@
 import { useState } from 'react'
-import './App.css'
 import { type RollData, getRollData } from './data/dice-data';
 import { DiceDisplay } from './components/DiceDisplay';
+import {
+    Button,
+    Container,
+    FormControl,
+    FormLabel,
+    MenuItem,
+    Select,
+    type SelectChangeEvent
+} from "@mui/material";
+import {green, orange} from "@mui/material/colors";
+import CheckIcon from '@mui/icons-material/Check';
+import ClearIcon from '@mui/icons-material/Clear';
+
 
 function App() {
     const [rollData, setRollData] = useState<RollData | undefined>(undefined);
@@ -16,36 +28,44 @@ function App() {
         setRollData(undefined);
     };
 
-    const onNumberOfDiceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setNumberOfDice(parseInt(event.target.value))
+    const onNumberOfDiceChange = (event: SelectChangeEvent<number>): void => {
+        setNumberOfDice(event.target.value)
     }
 
     return (
-        <>
-            <h1>Dice Game</h1>
+        <Container maxWidth="sm">
+            <h1 style={{color: green[600]}}>Dice Game</h1>
             <p>
-                Number of Dice: <select value={numberOfDice} onChange={onNumberOfDiceChange}>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-            </select>
+                <FormControl size="small">
+                    <FormLabel id="number-of-dice-label">Number of Dice</FormLabel>
+                    <Select value={numberOfDice} onChange={onNumberOfDiceChange}
+                        labelId="number-of-dice-label">
+                        <MenuItem value={1}>One</MenuItem>
+                        <MenuItem value={2}>Two</MenuItem>
+                        <MenuItem value={3}>Three</MenuItem>
+                        <MenuItem value={4}>Four</MenuItem>
+                        <MenuItem value={5}>Five</MenuItem>
+                    </Select>
+                </FormControl>
             </p>
             <p>
-                {(rollData === undefined) && <h4>No dice rolled yet</h4>}
-                <DiceDisplay values={rollData?.values} />
+                {
+                    (rollData != undefined) ?
+                        <DiceDisplay values={rollData?.values} /> :
+                        <h3 style={{color: orange[600]}}>No dice rolled yet</h3>
+                }
+
             </p>
             <p>
-                Total: {rollData?.total ?? 0}
+                <label style={{fontWeight: "bold", fontSize: "larger"}}>Total</label>: {rollData?.total ?? 0}
             </p>
             <p>
-                <button onClick={onRollDice}>Roll Dice</button>
+                <Button variant="contained" color="primary" onClick={onRollDice}>Roll <CheckIcon/></Button>
             </p>
             <p>
-                <button onClick={onReset}>Reset</button>
+                <Button variant="outlined" color="secondary" onClick={onReset}>Reset <ClearIcon/></Button>
             </p>
-        </>
+        </Container>
     );
 }
 export default App
