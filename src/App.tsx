@@ -33,6 +33,7 @@ function App() {
             </select>
             </p>
             <p>
+                {(rollData === undefined) && <h4>No dice rolled yet</h4>}
                 <DiceDisplay values={rollData?.values} />
             </p>
             <p>
